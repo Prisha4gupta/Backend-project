@@ -1,0 +1,16 @@
+student_code,first_name,last_name,email,date_of_birth,gender,phone,department_code,graduation_year,gpa
+STU006,Alice,Chen,alice.chen@university.edu,2002-03-15,Female,+1-555-0106,CS,2027,3.82
+STU007,Bob,Martinez,bob.martinez@university.edu,2001-07-22,Male,+1-555-0107,MATH,2026,3.45
+STU008,Carol,Davis,carol.davis@university.edu,2003-01-08,Female,+1-555-0108,PHY,2028,3.91
+STU009,Daniel,Wilson,daniel.w@university.edu,2002-11-30,Male,+1-555-0109,CS,2027,3.20
+STU010,Eva,Thompson,eva.t@university.edu,2001-05-14,Female,+1-555-0110,BIO,2026,3.68
+STU011,Frank,Garcia,frank.garcia@university.edu,2002-09-25,Male,+1-555-0111,CHEM,2027,3.55
+STU012,Grace,Lee,grace.lee@university.edu,2003-04-18,Female,+1-555-0112,CS,2028,3.95
+STU013,Henry,Anderson,henry.a@university.edu,2001-12-03,Male,+1-555-0113,ECON,2026,3.30
+STU014,Ivy,Taylor,ivy.taylor@university.edu,2002-06-20,Female,+1-555-0114,PSY,2027,3.72
+STU015,Jack,Moore,jack.moore@university.edu,2003-02-11,Male,+1-555-0115,ENG,2028,3.48
+STU016,Karen,Jackson,karen.j@university.edu,2001-08-07,Female,+1-555-0116,MATH,2026,3.88
+STU017,Leo,White,leo.white@university.edu,2002-10-29,Male,+1-555-0117,PHY,2027,3.15
+STU018,Mia,Harris,mia.harris@university.edu,2003-05-16,Female,+1-555-0118,CS,2028,3.78
+STU019,Noah,Clark,noah.clark@university.edu,2001-11-24,Male,+1-555-0119,BIO,2026,3.42
+STU020,Olivia,Lewis,olivia.l@university.edu,2002-07-09,Female,+1-555-0120,CHEM,2027,3.65
