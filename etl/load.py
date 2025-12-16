@@ -231,7 +231,92 @@ class DatabaseLoader:
         except Exception as e:
             logger.error(f"Error upserting student: {e}")
             return False, None, str(e)
-    
+        
+    def upsert_course(self, cursor, data: dict):
+        try:
+            # Get department_id from department_code
+            cursor.execute(
+                "SELECT department_id FROM departments WHERE department_code = %s",
+                (data["department_code"],)
+            )
+            dept = cursor.fetchone()
+            if not dept:
+                return False, "Department not found"
+
+            cursor.execute("""
+                INSERT INTO courses (course_code, course_name, credits, department_id, max_enrollment)
+                VALUES (%s, %s, %s, %s, %s)
+                ON CONFLICT (course_code)
+                DO UPDATE SET
+                    course_name = EXCLUDED.course_name,
+                    credits = EXCLUDED.credits,
+                    max_enrollment = EXCLUDED.max_enrollment,
+                    updated_at = CURRENT_TIMESTAMP
+            """, (
+                data["course_code"],
+                data["course_name"],
+                data["credits"],
+                dept[0],
+                data.get("max_enrollment", 30)
+            ))
+
+            return True, "upserted"
+
+        except Exception as e:
+            return False, str(e)
+        
+
+    def upsert_enrollment(self, cursor, data: dict):
+        try:
+            cursor.execute(
+                "SELECT student_id FROM students WHERE student_code = %s",
+                (data["student_code"],)
+            )
+            student = cursor.fetchone()
+            if not student:
+                return False, "Student not found"
+
+            cursor.execute(
+                "SELECT course_id FROM courses WHERE course_code = %s",
+                (data["course_code"],)
+            )
+            course = cursor.fetchone()
+            if not course:
+                return False, "Course not found"
+
+            cursor.execute("""
+                INSERT INTO enrollments (student_id, course_id, grade, status)
+                VALUES (%s, %s, %s, 'Enrolled')
+                ON CONFLICT (student_id, course_id)
+                DO UPDATE SET
+                    grade = EXCLUDED.grade,
+                    updated_at = CURRENT_TIMESTAMP
+            """, (
+                student[0],
+                course[0],
+                data.get("grade")
+            ))
+
+            return True, "upserted"
+
+        except Exception as e:
+            return False, str(e)
+
+    def load_courses(self, df):
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            for _, row in df.iterrows():
+                self.upsert_course(cursor, row.to_dict())
+            conn.commit()
+
+    def load_enrollments(self, df):
+        with self.get_connection() as conn:
+            cursor = conn.cursor()
+            for _, row in df.iterrows():
+                self.upsert_enrollment(cursor, row.to_dict())
+            conn.commit()
+
+
     def load_students_batch(
         self, 
         df: pd.DataFrame,

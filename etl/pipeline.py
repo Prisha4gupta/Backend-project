@@ -20,9 +20,9 @@ from typing import Optional, Dict
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent))
 
-from extract import DataExtractor
-from transform import DataTransformer
-from load import DatabaseLoader
+from etl.extract import DataExtractor
+from etl.transform import DataTransformer
+from etl.load import DatabaseLoader
 
 # Configure logging
 LOG_DIR = Path(__file__).parent / 'logs'

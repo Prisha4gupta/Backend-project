@@ -1,0 +1,4 @@
+course_code,course_name,credits,department_code,max_enrollment
+CS102,Advanced Python,3,CS,50
+MATH202,Calculus II,4,MATH,60
+PHY301,Thermodynamics,4,PHY,40

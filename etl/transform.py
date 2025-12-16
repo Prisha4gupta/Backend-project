@@ -364,6 +364,30 @@ class DataTransformer:
         logger.info(f"Transformation complete. {len(valid_df)} valid records")
         return valid_df
     
+    def transform_courses(self, df: pd.DataFrame) -> pd.DataFrame:
+        logger.info(f"Transforming {len(df)} course records")
+        df = df.copy()
+
+        df['course_code'] = df['course_code'].str.upper().str.strip()
+        df['course_name'] = df['course_name'].str.strip()
+
+        df['credits'] = pd.to_numeric(df['credits'], errors='coerce').fillna(3)
+        df['credits'] = df['credits'].clip(1, 12).astype(int)
+
+        df['department_code'] = df['department_code'].str.upper().str.strip()
+
+        return df
+
+    def transform_enrollments(self, df: pd.DataFrame) -> pd.DataFrame:
+        logger.info(f"Transforming {len(df)} enrollment records")
+        df = df.copy()
+
+        df['student_code'] = df['student_code'].str.upper().str.strip()
+        df['course_code'] = df['course_code'].str.upper().str.strip()
+
+        return df
+
+    
     def get_validation_report(self) -> Dict:
         """
         Get a summary of validation errors.
