@@ -1,60 +1,60 @@
-# Student Management ETL Pipeline
+# Student Data Engineering & Automation Pipeline
 
-A production-ready data engineering backend that ingests student data from CSV / Google Sheets into PostgreSQL (NeonDB) using an ETL pipeline, with a FastAPI REST API for student registration and analytics.
-
----
-
-## 🏗️ Project Structure
-
-```text
-data-engineering-assignment/
-├── etl/                      # ETL Pipeline
-│   ├── extract.py           # Data extraction from CSV/JSON/URLs
-│   ├── transform.py         # Data validation & transformation
-│   ├── load.py              # Database loading with upsert support
-│   ├── etl.py               # Pipeline orchestrator & CLI
-│   └── logs/                # ETL execution logs
-├── api/
-│   └── main.py              # FastAPI REST API
-├── sql/
-│   ├── schema.sql           # Database schema (3NF normalized)
-│   ├── seed.sql             # Initial seed data
-│   ├── queries.sql          # Analytical queries
-│   ├── views.sql            # Database views
-│   └── procedures.sql       # Stored procedures
-├── scripts/
-│   └── test_connection.py   # Database connection tester
-├── data/
-│   └── sample_students.csv  # Sample student data
-├── app_script/
-│   └── sheet_to_db.gs       # Google Apps Script for Sheets integration
-├── requirements.txt         # Python dependencies
-└── README.md               # This file
-```
+This project demonstrates a full-cycle **Data Engineering migration** workflow. It automates the extraction of student data from **Google Sheets**, validates it via a **FastAPI** backend, and loads it into a **PostgreSQL (NeonDB)** warehouse.
+It includes a robust **ETL pipeline** (Extract, Transform, Load) for relational data (Students, Courses, Enrollments), automated email notifications for data errors, and a showcase of processing messy public datasets.
 
 ---
 
 ## 🚀 Features
 
-- ETL Pipeline (Extract → Transform → Load)
-- PostgreSQL (NeonDB) with normalized schema (3NF)
-- FastAPI REST API for student registration
-- SQL Views & Stored Procedures for analytics
-- Batch processing & idempotent upserts
-- Connection & pipeline testing
-- Optional Google Sheets integration
+* **Automated Sync:** Real-time data sync from Google Sheets to NeonDB via Google Apps Script triggers.
+* **Data Validation:** Strict validation for GPA, Email, and Foreign Key constraints before insertion.
+* **Relational ETL:** A Python-based pipeline handling dependencies between `Departments` -> `Courses` -> `Students` -> `Enrollments`.
+* **Interactive Dashboard:** Real-time feedback in Google Sheets (Rows turn Green/Red based on status).
+* **Public Dataset Processing:** Capable of ingesting and cleaning messy raw CSV data.
+---
+
+## 🛠️ Tech Stack
+* **Database:** PostgreSQL (NeonDB Serverless)
+* **Backend:** Python (FastAPI) hosted on **Render**
+* **ETL Engine:** Python (Pandas, SQLAlchemy, Psycopg2)
+* **Automation:** Google Apps Script (JavaScript)
+* **Documentation:** Swagger UI
+
+---
+## 🏗️ Project Structure
+
+```text
+Backend-project
+├── api
+│   └── main.py                 # FastAPI backend for real-time registration
+├── app_script
+│   └── sheet_to_db.gs          # Google Apps Script for Sheet automation
+├── data
+│   ├── courses.csv             # Source data for courses
+│   ├── enrollments.csv         # Source data for enrollments
+│   └── sample_students.csv     # Source data for students
+├── etl
+│   ├── __init__.py
+│   ├── pipeline.py             # Main pipeline controller
+│   ├── extract.py              # Data extraction logic
+│   ├── transform.py            # Cleaning & validation logic (Pandas)
+│   ├── load.py                 # Database loading logic (SQLAlchemy)
+│   ├── run_courses_etl.py      # Script to load Courses
+│   ├── run_enrollments_etl.py  # Script to load Enrollments
+│   └── public_dataset_etl.py   # Script for Public Dataset 
+├── sql
+│   ├── schema.sql              # Database Table Definitions
+│   ├── seed.sql                # Initial data seeds
+│   ├── queries.sql             # Analytical queries
+│   └── procedures.sql          # Stored Procedures (Registration logic)
+├── .env                        # Environment variables (Database URL)
+├── requirements.txt            # Python dependencies
+└── README.md                   # Project Documentation
+```
 
 ---
 
-## ⚙️ Tech Stack
-
-- Python 3.10+
-- FastAPI
-- PostgreSQL (NeonDB)
-- SQLAlchemy + psycopg2
-- Pandas
-- Google Apps Script (optional)
----
 
 ## 🚀 Quick Start
 
@@ -78,6 +78,8 @@ python scripts/test_connection.py
 
 # Run ETL
 python etl/etl.py --source data/sample_students.csv
+python -m etl.run_courses_etl
+python -m etl.run_enrollments_etl
 
 # Start API
 cd api
