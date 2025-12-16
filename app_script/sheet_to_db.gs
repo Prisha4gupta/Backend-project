@@ -24,7 +24,7 @@
 // ============================================
 
 // Replace with your actual API endpoint
-const API_ENDPOINT = 'https://your-api-endpoint.com/register-student';
+const API_ENDPOINT = 'https://backend-project-c6r1.onrender.com/register-student';
 
 // Expected column headers (0-indexed)
 const COLUMNS = {
@@ -244,6 +244,11 @@ function processRow(sheet, row, rowData) {
     // Highlight errors
     statusCell.setValue('Error: ' + validation.errors.join('; '));
     highlightRow(sheet, row, COLORS.ERROR);
+    MailApp.sendEmail({
+      to: "your-email@gmail.com",   // your email
+      subject: "Student Data Validation Error",
+      body: `Row ${row} failed validation:\n\n${validation.errors.join(', ')}`
+    });
     return;
   }
   
